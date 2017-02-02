@@ -6,27 +6,26 @@ services:
 env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed 's/[^0-9A-Za-z]/_/g')
 
-before_install:
-  - docker --version
-
 install:
+  - docker-compose --version
   # Upgrade Docker Compose. See: https://github.com/docker/compose/releases
   - curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
   - sudo chmod +x /usr/local/bin/docker-compose
 
 before_script:
   # Login and pull existing images to populate the build cache.
-  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-  - docker pull "agavelab/letsencrypt:${TAG}" || true
-  - docker pull "agavelab/haproxy:${TAG}" || true
+  - docker login -u=${DOCKER_USER} -p=${DOCKER_PASS}
+  - docker pull agavelab/letsencrypt:${TAG} || true
+  - docker pull agavelab/haproxy:${TAG} || true
+
 
 script:
-  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-  - docker build -t "agavelab/haproxy:${TAG}" haproxy
-  - docker build -t "agavelab/letsencrypt:${TAG}" letsencrypt
-  - docker push "agavelab/haproxy:${TAG}"
-  - docker push "agavelab/letsencrypt:${TAG}"
+  - docker login -u={$DOCKER_USER} -p=${DOCKER_PASS}
+  - docker build -t agavelab/haproxy:${TAG} haproxy
+  - docker build -t agavelab/letsencrypt:${TAG} letsencrypt
+  - docker push agavelab/haproxy:${TAG}
+  - docker push agavelab/letsencrypt:${TAG}
 
 after_success:
-  - docker history "agavelab/haproxy:${TAG}"
-  - docker history "agavelab/letsencrypt:${TAG}"
+  - docker history agavelab/haproxy:${TAG}
+  - docker history agavelab/letsencrypt:${TAG}
