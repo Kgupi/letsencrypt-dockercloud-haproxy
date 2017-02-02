@@ -10,12 +10,6 @@ branches:
 env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed 's/[^0-9A-Za-z]/_/g')
 
-install:
-  - docker-compose --version
-  # Upgrade Docker Compose. See: https://github.com/docker/compose/releases
-  - curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
-  - sudo chmod +x /usr/local/bin/docker-compose
-
 before_script:
   # Login and pull existing images to populate the build cache.
   - docker login -u=${DOCKER_USER} -p=${DOCKER_PASS}
