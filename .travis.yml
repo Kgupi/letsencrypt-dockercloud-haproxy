@@ -20,7 +20,7 @@ before_script:
 
 
 script:
-  - docker login -u={$DOCKER_USER} -p=${DOCKER_PASS}
+  - docker login -u=${DOCKER_USER} -p=${DOCKER_PASS}
   - docker build -t agavelab/haproxy:${TAG} haproxy
   - docker build -t agavelab/letsencrypt:${TAG} letsencrypt
   - docker push agavelab/haproxy:${TAG}
