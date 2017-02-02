@@ -18,7 +18,7 @@ before_install:
   # - sudo chmod +x /usr/local/bin/docker-compose
 
   # Login and pull existing images to populate the build cache.
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - docker pull "agavelab/letsencrypt:${TAG}" || true
   - docker pull "agavelab/haproxy:${TAG}" || true
 
