@@ -14,7 +14,7 @@ ENV VIRTUAL_HOST_WEIGHT="999"
 ENV PATH="/opt/letsencrypt/bin:$PATH"
 
 COPY . /opt/letsencrypt/
-RUN ln -fs /opt/letsencrypt/bin/update-certs.sh /etc/periodic/daily/
+#RUN ln -fs /opt/letsencrypt/bin/update-certs.sh /etc/periodic/daily/
 
 ENTRYPOINT ["tini", "--"]
 CMD ["entrypoint.sh", "crond", "-f"]

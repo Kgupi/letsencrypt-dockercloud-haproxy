@@ -1,30 +1,20 @@
 #!/bin/bash
 
-set -e
+source ./util.sh
 
-# The certbot standalone plugin returns 503 errors. Perhaps because some time
-# is needed after starting before HAproxy can detect it. So run our own web
-# server and use the webroot plugin.
-if [[ -z "$(ps | grep python | grep -v grep)" ]]; then
-	mkdir -p /opt/www
-	(cd /opt/www && python -m SimpleHTTPServer 80) &
-	sleep 1
+OUTPUT="$(certbot renew)"
+
+if [[ $? -eq 0 ]]; then
+	echo "${OUTPUT}" | grep -q "No renewals were attempted"
+	if [[ $? -eq 0 ]]; then
+		# all certificates have more than 30 days left -
+		# nothing to do
+		exit 0
+	fi
+	echo "${OUTPUT}" | tr -Cd '[:print:]\n' \
+		| util::send "${DOMAINS}: Let's Encrypt keys renewal success"
+else
+	echo "${OUTPUT}" | tr -Cd '[:print:]\n' \
+		| util::send "${DOMAINS}: Let's Encrypt keys renewal failed, exit code $?!"
+	exit 1
 fi
-
-# Certificates are separated by semi-colon (;). Domains on each certificate are
-# separated by comma (,).
-CERTS=(${DOMAINS//;/ })
-
-# Create or renew certificates. Don't exit on error. It's likely that certbot
-# will fail on first run, if HAproxy is not running.
-for DOMAINS in "${CERTS[@]}"; do
-	certbot certonly \
-		--agree-tos \
-		--domains "$DOMAINS" \
-		--email "$EMAIL" \
-		--expand \
-		--noninteractive \
-		--webroot \
-		--webroot-path /opt/www \
-		$OPTIONS || true
-done

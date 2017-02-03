@@ -1,8 +1,0 @@
-version: "2"
-services:
-  haproxy:
-    build: haproxy
-    image: interaction/haproxy:latest
-  letsencrypt:
-    build: letsencrypt
-    image: interaction/letsencrypt:latest
