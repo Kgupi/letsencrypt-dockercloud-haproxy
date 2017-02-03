@@ -12,6 +12,7 @@ VOLUME /etc/letsencrypt
 ENV VIRTUAL_HOST="*/.well-known/acme-challenge/*"
 ENV VIRTUAL_HOST_WEIGHT="999"
 ENV PATH="/opt/letsencrypt/bin:$PATH"
+ENV MAILGUN_API_KEY
 
 COPY . /opt/letsencrypt/
 #RUN ln -fs /opt/letsencrypt/bin/update-certs.sh /etc/periodic/daily/
