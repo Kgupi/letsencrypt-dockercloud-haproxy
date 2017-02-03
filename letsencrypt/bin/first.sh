@@ -20,11 +20,12 @@ CERTS=(${DOMAINS//;/ })
 # will fail on first run, if HAproxy is not running.
 for DOMAINS in "${CERTS[@]}"; do
 	certbot certonly \
-        --webroot \
 		--agree-tos \
-        --quiet \
-        --domains "$DOMAINS" \
+		--domains "$DOMAINS" \
 		--email "$EMAIL" \
+		--expand \
+		--noninteractive \
+		--webroot \
 		--webroot-path /opt/www \
 		$OPTIONS || true
 done
