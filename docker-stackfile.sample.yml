@@ -1,5 +1,5 @@
 haproxy:
-  image: interaction/haproxy:master
+  image: agavelab/haproxy:master
   links:
     - letsencrypt
     - web
@@ -11,11 +11,11 @@ haproxy:
   volumes_from:
     - letsencrypt
 letsencrypt:
-  image: interaction/letsencrypt:master
+  image: agavelab/letsencrypt:master
   environment:
-    - DOMAINS=foo.com,www.foo.com;bar.com,www.bar.com
-    - EMAIL=admins@interaction.net.au
-    # - OPTIONS=--staging
+    - DOMAINS=one.reluctanttransparency.com
+    - EMAIL=fernando@agavelab.com
+    #- OPTIONS=--staging
   expose:
     - "80"
 web:
