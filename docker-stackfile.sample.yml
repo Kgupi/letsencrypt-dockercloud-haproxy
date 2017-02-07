@@ -1,25 +1,35 @@
 haproxy:
-  image: agavelab/haproxy:master
+  image: 'agavelab/haproxy:master'
   links:
     - letsencrypt
     - web
   ports:
-    - "80:80"
-    - "443:443"
+    - '80:80'
+    - '443:443'
   roles:
     - global
-  volumes_from:
+  tags: # tags help determine the node cluster to be used when deployed
+    - load
+  volumes_from: # mounts volumes from linked services
     - letsencrypt
 letsencrypt:
-  image: agavelab/letsencrypt:master
+  image: 'agavelab/letsencrypt:master'
   environment:
-    - DOMAINS=one.reluctanttransparency.com
-    - EMAIL=fernando@agavelab.com
-    #- OPTIONS=--staging
+    - DOMAINS="${DOMAINS}"
+    - EMAIL="${EMAIL}"
+    - MAILGUN_API_KEY="${MAILGUN_API_KEY}"
   expose:
-    - "80"
+    - '80'
+  tags:
+    - load
 web:
+  image: 'dockercloud/hello-world:latest'
+  deployment_strategy: high_availability
+  target_num_containers: 8 # number of containers to deploy
   environment:
     - FORCE_SSL=yes
-    - VIRTUAL_HOST=*,https://*
-  image: dockercloud/hello-world:latest
+    - 'VIRTUAL_HOST=*,https://*'
+  ports:
+    - '80'
+  tags:
+    - web
