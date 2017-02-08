@@ -10,6 +10,9 @@ branches:
 env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed 's/[^0-9A-Za-z]/_/g')
 
+before_script:
+  - docker login -u=${DOCKER_USER} -p=${DOCKER_PASS}
+
 script:
   - docker build -t agavelab/haproxy:${TAG} haproxy
   - docker build -t agavelab/letsencrypt:${TAG} letsencrypt
