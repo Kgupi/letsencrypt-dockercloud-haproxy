@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/agave/letsencrypt-dockercloud-haproxy.svg?branch=master)](https://travis-ci.org/agave/letsencrypt-dockercloud-haproxy)
 # Overview
 
 The `haproxy` image will:

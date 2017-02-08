@@ -25,7 +25,7 @@ for DOMAINS in "${CERTS[@]}"; do
 		--non-interactive \
 		--domains "$DOMAINS" \
 		--email "$EMAIL" \
-        --expand \
+		--expand \
 		--webroot-path /opt/www \
 		$OPTIONS || true
 done
