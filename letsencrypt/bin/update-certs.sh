@@ -1,20 +1,21 @@
 #!/bin/bash
 
-source ./util.sh
+source /opt/letsencrypt/bin/util.sh
 
-OUTPUT="$(certbot renew)"
+OUTPUT="$(/usr/bin/certbot renew)"
 
 if [[ $? -eq 0 ]]; then
 	echo "${OUTPUT}" | grep -q "No renewals were attempted"
 	if [[ $? -eq 0 ]]; then
-		# all certificates have more than 30 days left -
-		# nothing to do
+		echo "all certificates have more than 30 days left - nothing to do "
 		exit 0
 	fi
-	echo "${OUTPUT}" | tr -Cd '[:print:]\n' \
-		| util::send "${DOMAINS}: Let's Encrypt keys renewal success"
+	MSG="success"
+    CODE=0
 else
-	echo "${OUTPUT}" | tr -Cd '[:print:]\n' \
-		| util::send "${DOMAINS}: Let's Encrypt keys renewal failed, exit code $?!"
-	exit 1
+    MSG="failed"
+    CODE=1
 fi
+
+util::send "${DOMAINS}: Let's Encrypt keys renewal ${MSG}!: ${OUTPUT}"
+exit $CODE
