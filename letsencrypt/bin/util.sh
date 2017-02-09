@@ -6,5 +6,5 @@ util::send() {
 		-F from="Let's Encrypt Renew Service <mailgun@sandbox464b56c1e6a64e35a397e37669a27499.mailgun.org>" \
 		-F to="${EMAIL}" \
 		-F subject="Let's Encrypt Renew Status" \
-		-F text=$1
+		-F text="$1"
 }

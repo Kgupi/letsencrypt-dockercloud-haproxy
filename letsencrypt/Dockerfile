@@ -4,6 +4,7 @@ RUN apk add --update \
 		bash \
 		certbot \
 		tini \
+		curl \
 	&& rm -rf /var/cache/apk/*
 
 EXPOSE 80
@@ -14,8 +15,8 @@ ENV VIRTUAL_HOST_WEIGHT="999"
 ENV PATH="/opt/letsencrypt/bin:$PATH"
 
 COPY . /opt/letsencrypt/
-RUN chmod +x /opt/letsencrypt/bin/*.sh
-#RUN ln -fs /opt/letsencrypt/bin/update-certs.sh /etc/periodic/daily/
+RUN chmod +x /opt/letsencrypt/bin/*.sh \
+	&& /usr/bin/crontab /opt/letsencrypt/bin/crontab
 
 ENTRYPOINT ["tini", "--"]
-CMD ["entrypoint.sh", "crond", "-f"]
+CMD ["entrypoint.sh", "/usr/sbin/crond", "-f", "-l", "0"]

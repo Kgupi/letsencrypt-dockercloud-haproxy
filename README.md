@@ -11,7 +11,7 @@ The `haproxy` image will:
 
 The `letsencrypt` image will:
 
-  * Automatically create or renew certificates on startup and daily thereafter.
+  * Automatically create or renew certificates on startup and monthly thereafter.
 
 # Usage
 
@@ -29,7 +29,8 @@ In your stack file:
     will be used for all certificates.
 
   * Define an `OPTIONS` environment variable in the `letsencrypt` service, if
-    you want to pass additional arguments to `certbot` (e.g. `--staging`).
+    you want to pass additional arguments to `certbot` (e.g. `--staging`, `--quiet`, etc.).
+  * Define a `MAILGUN_API_KEY` environment variable in the `letsencrypt` service to enable email notifications on certificate renewals.
 
 Several environment variables are hard coded, and don't need to be defined in
 your stack file:
