@@ -12,6 +12,9 @@ if [[ $? -eq 0 ]]; then
 	fi
 	MSG="success"
     CODE=0
+
+	# touch file to trigger HAproxy reload
+	echo "$OUTPUT" >> $NOTIFICATION_FOLDER/ready
 else
     MSG="failed"
     CODE=1
