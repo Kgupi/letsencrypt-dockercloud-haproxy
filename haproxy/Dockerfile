@@ -7,6 +7,7 @@ RUN apk add --update \
 	&& rm -rf /var/cache/apk/*
 
 ENV LIVE_CERT_FOLDER="/etc/letsencrypt/live"
+ENV NOTIFICATION_FOLDER="/var/opt/letsencrypt"
 ENV PATH="/opt/haproxy/bin:$PATH"
 
 COPY . /opt/haproxy
