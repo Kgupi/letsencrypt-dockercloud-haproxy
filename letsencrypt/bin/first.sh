@@ -23,11 +23,10 @@ for DOMAINS in "${CERTS[@]}"; do
 		--webroot \
 		--agree-tos \
 		--non-interactive \
-		--domains \"$DOMAINS\" \
-		--email \"$EMAIL\" \
+		--domains $DOMAINS \
+		--email $EMAIL \
 		--expand \
-		--webroot-path /opt/www \
-		$OPTIONS || true)"
+		--webroot-path /opt/www $OPTIONS || true)"
 done
 
 # touch file to trigger HAproxy reload
