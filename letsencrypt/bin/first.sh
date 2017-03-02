@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ev
 
 # TODO: check if true
 # The certbot standalone plugin returns 503 errors. Perhaps because some time
@@ -19,13 +19,16 @@ CERTS=(${DOMAINS//;/ })
 # Create or renew certificates. Don't exit on error. It's likely that certbot
 # will fail on first run, if HAproxy is not running.
 for DOMAINS in "${CERTS[@]}"; do
-	certbot certonly \
+	OUT="$OUT"$'\n'"$(certbot certonly \
 		--webroot \
 		--agree-tos \
 		--non-interactive \
-		--domains "$DOMAINS" \
-		--email "$EMAIL" \
+		--domains \"$DOMAINS\" \
+		--email \"$EMAIL\" \
 		--expand \
 		--webroot-path /opt/www \
-		$OPTIONS || true
+		$OPTIONS || true)"
 done
+
+# touch file to trigger HAproxy reload
+echo "$OUT" >> $NOTIFICATION_FOLDER/ready
